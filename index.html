@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>SYAH PRIZAL</title>
 
+<!-- FONT ALADIN -->
 <link href="https://fonts.googleapis.com/css2?family=Aladin&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
@@ -20,7 +21,7 @@ body{
   margin:0;
 }
 
-/* PANEL */
+/* PANEL GLASS */
 .container{
   max-width:750px;
   margin:400px auto 0 auto;
@@ -34,23 +35,12 @@ body{
   box-shadow:0 10px 30px rgba(0,0,0,0.5);
 }
 
-/* WRAPPER JUDUL */
-.title-wrapper{
-  display:flex;
-  align-items:center;
-  gap:15px;
-}
-
-/* HELLO KITTY */
-.kitty{
-  width:60px;
-}
-
-/* JUDUL */
+/* JUDUL STYLE GRAFFITI */
 h1{
   margin-bottom:10px;
   letter-spacing:2px;
   font-size:60px;
+  font-family:'Aladin', cursive;
   color:#ff8c42;
 
   text-shadow:
@@ -71,7 +61,9 @@ h1{
 .verse{
   margin-bottom:20px;
   font-size:15px;
+  opacity:0.9;
   color:white;
+  font-family:'Aladin', cursive;
 }
 
 /* TEXTAREA */
@@ -110,11 +102,14 @@ button:hover{
   margin-top:30px;
   font-size:20px;
   font-weight:bold;
+  letter-spacing:1px;
+  opacity:0.9;
 }
 
 .rainbow-text span{
   font-weight:bold;
   display:inline-block;
+  font-family:'Aladin', cursive;
 }
 </style>
 </head>
@@ -123,15 +118,7 @@ button:hover{
 
 <div class="container">
 
-<div class="title-wrapper">
-
-<img class="kitty" src="https://i.pinimg.com/originals/6c/62/5e/6c625e8e9d3e0c0c6c9f8c0d0c2cce1c.png">
-
-<h1>SYAH PRIZAL</h1>
-
-<img class="kitty" src="https://i.pinimg.com/originals/6c/62/5e/6c625e8e9d3e0c0c6c9f8c0d0c2cce1c.png">
-
-</div>
+<h1 id="title-text">SYAH PRIZAL</h1>
 
 <div class="verse">
 Sesungguhnya Allah menyuruh (kamu) berlaku adil dan berbuat kebajikan, memberi kepada kerabat, dan Allah melarang perbuatan keji, kemungkaran, dan permusuhan. 
@@ -147,11 +134,12 @@ Sesungguhnya Allah menyuruh (kamu) berlaku adil dan berbuat kebajikan, memberi k
 
 </div>
 
+<!-- NAMA BAWAH -->
 <div class="footer-name rainbow-text" id="footer-name">Rizall</div>
 
 <script>
 
-/* WARNA PELANGI */
+/* WARNA PELANGI UNTUK NAMA BAWAH */
 function makeRainbow(elementId){
   const el = document.getElementById(elementId);
   const text = el.innerText;
@@ -167,7 +155,7 @@ function makeRainbow(elementId){
 
 makeRainbow('footer-name');
 
-/* OCR */
+/* OCR FUNCTION */
 function runOCR(image){
   Tesseract.recognize(
     image,
@@ -176,16 +164,22 @@ function runOCR(image){
 
     let cleaned = text.replace(/\n+/g,"").replace(/\s+/g,"").trim();
 
-    document.getElementById("result").value = cleaned;
+    const resultArea = document.getElementById("result");
+    resultArea.value = cleaned;
+
+    resultArea.style.backgroundColor = "rgba(255,255,255,0.3)";
+    resultArea.style.color = "black";
 
   })
 }
 
+/* UPLOAD GAMBAR */
 document.getElementById('imageInput').addEventListener('change',function(){
   const file = this.files[0];
   runOCR(file);
 })
 
+/* PASTE SCREENSHOT */
 document.addEventListener('paste',function(event){
   const items = event.clipboardData.items;
 
@@ -200,6 +194,7 @@ document.addEventListener('paste',function(event){
   }
 })
 
+/* COPY TEXT */
 function copyText(){
   const textarea = document.getElementById("result");
   textarea.select();
