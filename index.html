@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>SYAH PRIZAL</title>
 
-<!-- ===== IMPORT FONT ALADIN ===== -->
+<!-- FONT ALADIN -->
 <link href="https://fonts.googleapis.com/css2?family=Aladin&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
@@ -21,7 +21,7 @@ body{
   margin:0;
 }
 
-/* ===== PANEL UTAMA GLASS ===== */
+/* PANEL GLASS */
 .container{
   max-width:750px;
   margin:400px auto 0 auto;
@@ -35,29 +35,38 @@ body{
   box-shadow:0 10px 30px rgba(0,0,0,0.5);
 }
 
+/* JUDUL STYLE GRAFFITI */
 h1{
   margin-bottom:10px;
   letter-spacing:2px;
-  font-size:32px;
-}
-
-/* ===== TEKS WARNA-WARNI ===== */
-.rainbow-text span{
-  font-weight:bold;
-  display:inline-block;
+  font-size:60px;
   font-family:'Aladin', cursive;
+  color:#ff8c42;
+
+  text-shadow:
+  -3px -3px 0 #000,
+   3px -3px 0 #000,
+  -3px  3px 0 #000,
+   3px  3px 0 #000,
+
+  -6px -6px 0 #ffb36b,
+   6px -6px 0 #ffb36b,
+  -6px  6px 0 #ffb36b,
+   6px  6px 0 #ffb36b,
+
+  8px 8px 15px rgba(0,0,0,0.5);
 }
 
-/* ===== AYAT ALKITAB ===== */
+/* AYAT */
 .verse{
   margin-bottom:20px;
   font-size:15px;
   opacity:0.9;
-  color:white; /* tetap putih */
+  color:white;
   font-family:'Aladin', cursive;
 }
 
-/* ===== TEXTAREA ===== */
+/* TEXTAREA */
 textarea{
   width:60%;
   height:150px;
@@ -69,9 +78,10 @@ textarea{
   resize:none;
   background:rgba(255,255,255,0.3);
   color:black;
-  font-family: 'Courier New', monospace;
+  font-family:'Courier New', monospace;
 }
 
+/* BUTTON */
 button{
   padding:10px 25px;
   margin-top:15px;
@@ -87,13 +97,19 @@ button:hover{
   background:#2563eb;
 }
 
-/* ===== NAMA BAWAH ===== */
+/* NAMA BAWAH */
 .footer-name{
   margin-top:30px;
-  font-size:18px;
+  font-size:20px;
   font-weight:bold;
   letter-spacing:1px;
   opacity:0.9;
+}
+
+.rainbow-text span{
+  font-weight:bold;
+  display:inline-block;
+  font-family:'Aladin', cursive;
 }
 </style>
 </head>
@@ -102,81 +118,89 @@ button:hover{
 
 <div class="container">
 
-<h1 class="rainbow-text" id="title-text">SYAH PRIZAL</h1>
+<h1 id="title-text">SYAH PRIZAL</h1>
 
-<div class="verse" id="verse-text">
+<div class="verse">
 Sesungguhnya Allah menyuruh (kamu) berlaku adil dan berbuat kebajikan, memberi kepada kerabat, dan Allah melarang perbuatan keji, kemungkaran, dan permusuhan. 
 <b>QS. An-Nahl 16:90</b>
 </div>
 
 <input type="file" id="imageInput">
 <br>
+
 <button onclick="copyText()">Copy Text</button>
 
 <textarea id="result" placeholder="Sini Guyssss hehehe"></textarea>
 
 </div>
 
-<!-- ===== NAMA BAWAH ===== -->
+<!-- NAMA BAWAH -->
 <div class="footer-name rainbow-text" id="footer-name">Rizall</div>
 
 <script>
-/* ===== WARNA-WARNI SETIAP HURUF ===== */
+
+/* WARNA PELANGI UNTUK NAMA BAWAH */
 function makeRainbow(elementId){
   const el = document.getElementById(elementId);
   const text = el.innerText;
   const colors = ['#FF0000','#FF7F00','#FFFF00','#00FF00','#0000FF','#4B0082','#9400D3'];
   let html = '';
-  for(let i=0; i<text.length; i++){
-    const char = text[i];
-    const color = colors[i % colors.length];
-    html += '<span style="color:'+color+'">'+char+'</span>';
+  for(let i=0;i<text.length;i++){
+    const char=text[i];
+    const color=colors[i%colors.length];
+    html+='<span style="color:'+color+'">'+char+'</span>';
   }
-  el.innerHTML = html;
+  el.innerHTML=html;
 }
 
-// Terapkan ke judul dan nama bawah saja
-makeRainbow('title-text');
 makeRainbow('footer-name');
 
-/* ===== OCR FUNCTION ===== */
+/* OCR FUNCTION */
 function runOCR(image){
   Tesseract.recognize(
     image,
     'eng'
   ).then(({ data: { text } }) => {
+
     let cleaned = text.replace(/\n+/g,"").replace(/\s+/g,"").trim();
+
     const resultArea = document.getElementById("result");
     resultArea.value = cleaned;
-    
+
     resultArea.style.backgroundColor = "rgba(255,255,255,0.3)";
     resultArea.style.color = "black";
+
   })
 }
 
-/* ===== UPLOAD GAMBAR ===== */
+/* UPLOAD GAMBAR */
 document.getElementById('imageInput').addEventListener('change',function(){
   const file = this.files[0];
   runOCR(file);
 })
 
-/* ===== PASTE SCREENSHOT ===== */
+/* PASTE SCREENSHOT */
 document.addEventListener('paste',function(event){
   const items = event.clipboardData.items;
+
   for (let i = 0; i < items.length; i++) {
+
     if (items[i].type.indexOf("image") !== -1) {
+
       const blob = items[i].getAsFile();
       runOCR(blob);
+
     }
   }
 })
 
-/* ===== COPY TEXT ===== */
+/* COPY TEXT */
 function copyText(){
   const textarea = document.getElementById("result");
   textarea.select();
   document.execCommand("copy");
 }
+
 </script>
 
 </body>
